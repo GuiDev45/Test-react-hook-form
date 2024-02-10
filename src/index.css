@@ -55,6 +55,17 @@ button:active {
   background-color: #005f85;
 }
 
+.error-message {
+  color: #E14545;
+}
+
+.success-message {
+  color: #17f9ff;
+  display: flex;
+  justify-content: center;
+  font-size: 21px;
+  font-weight: 700;
+}
 /*Layout*/
 
 .container-flex {

@@ -1,9 +1,14 @@
 import { useState } from "react";
-import "./index.css"; // Importe seu arquivo CSS aqui
+import "./index.css";
 
 export default function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<{ email: string; password: string }>({
+    email: "",
+    password: "",
+  });
+  const [success, setSuccess] = useState(false);
 
   const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -15,9 +20,25 @@ export default function App() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(email);
-    console.log(password);
-    console.log("Submissão feita corretamente");
+
+    setError({ email: "", password: "" });
+
+    if (!email.includes("@")) {
+      setError({ ...error, email: "Email precisa do @" });
+      setSuccess(false);
+      return;
+    }
+
+    if (password.length < 8) {
+      setError({
+        ...error,
+        password: "A senha deve ter pelo menos 8 caracteres",
+      });
+      setSuccess(false);
+      return;
+    }
+
+    setSuccess(true);
   };
 
   return (
@@ -30,13 +51,22 @@ export default function App() {
           value={email}
           onChange={handleChangeEmail}
         />
+        {error.email && <div className="error-message">{error.email}</div>}
         <input
           type="password"
           placeholder="Password:"
           value={password}
           onChange={handleChangePassword}
         />
+        {error.password && (
+          <div className="error-message">{error.password}</div>
+        )}
         <button type="submit">Enviar</button>
+        {success && (
+          <div className="success-message">
+            Parabéns! Login bem-sucedido! 🎉
+          </div>
+        )}
       </form>
     </div>
   );
